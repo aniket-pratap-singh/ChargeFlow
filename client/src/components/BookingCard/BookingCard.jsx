@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import {
     FaMapMarkerAlt,
     FaCalendarAlt,
@@ -61,7 +63,6 @@ const BookingCard = ({ booking, onCancel }) => {
             </div>
 
             <div className="flex gap-4 mt-5">
-
                 <span
                     className={`px-3 py-1 rounded-full text-white text-sm font-semibold ${
                         booking.status === "Booked"
@@ -75,7 +76,6 @@ const BookingCard = ({ booking, onCancel }) => {
                 >
                     {booking.status}
                 </span>
-
                 <span
                     className={`px-3 py-1 rounded-full text-white text-sm font-semibold ${
                         booking.paymentStatus === "Paid"
@@ -85,20 +85,35 @@ const BookingCard = ({ booking, onCancel }) => {
                 >
                     {booking.paymentStatus}
                 </span>
-
             </div>
 
             {
-                booking.status === "Booked" && (
-
-                    <button
-                        onClick={() => onCancel(booking._id)}
-                        className="mt-6 bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg transition"
-                    >
-                        Cancel Booking
-                    </button>
-
-                )
+                <div className="flex gap-4 mt-8">
+                    {
+                        booking.paymentStatus === "Pending" &&
+                        booking.status === "Booked" && (
+                            <Link
+                                to={`/payment/${booking._id}`}
+                            >
+                                <button
+                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition"
+                                >
+                                    💳 Pay Now
+                                </button>
+                            </Link>
+                        )
+                    }
+                    {
+                        booking.status === "Booked" && (
+                            <button
+                                onClick={() => onCancel(booking._id)}
+                                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition"
+                            >
+                                Cancel Booking
+                            </button>
+                        )
+                    }
+                </div>
             }
 
         </div>

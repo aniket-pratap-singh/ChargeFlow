@@ -5,6 +5,7 @@ const Home = () => {
 
     const navigate = useNavigate();
     const { logout } = useAuth();
+    const { user } = useAuth();
 
     const handleLogout = () => {
         logout();
@@ -20,17 +21,15 @@ const Home = () => {
             <div className="bg-[#0F172A] text-white py-16">
 
                 <div className="max-w-6xl mx-auto px-6">
-
                     <h1 className="text-5xl font-bold">
-                        Welcome to ChargeFlow
+                        Welcome to ChargeFlow,
                     </h1>
-
-                    <p className="text-gray-300 text-lg mt-4">
-
+                    <h2 className="text-3xl font-semibold text-green-400 mt-3">
+                        {user?.name || "User"} 
+                    </h2>
+                    <p className="text-gray-300 text-lg mt-5">
                         Manage your EV charging experience from one place.
-
                     </p>
-
                 </div>
 
             </div>
