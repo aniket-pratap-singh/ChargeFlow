@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
 import BookingCard from "../../components/BookingCard/BookingCard";
+import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
 
     const [bookings, setBookings] = useState([]);
+    const navigate = useNavigate();
 
     // Fetch all bookings
     const fetchBookings = async () => {
@@ -52,9 +54,20 @@ const MyBookings = () => {
 
     return (
         <div className="max-w-5xl mx-auto p-8">
-            <h1 className="text-4xl font-bold mb-8 text-center">
-                My Bookings
-            </h1>
+            <div className="flex justify-between items-center mb-8">
+
+                <h1 className="text-4xl font-bold">
+                    My Bookings
+                </h1>
+
+                <button
+                    onClick={() => navigate("/home")}
+                    className="bg-slate-700 hover:bg-slate-800 text-white px-5 py-2 rounded-lg font-semibold transition"
+                >
+                    🏠 Home
+                </button>
+
+            </div>
 
             {
                 bookings.length === 0 ?
