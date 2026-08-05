@@ -9,7 +9,13 @@ import paymentRoutes from "./routes/payment.routes.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://charge-flow-gules.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Check profile route
