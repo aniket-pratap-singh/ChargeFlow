@@ -1,7 +1,7 @@
 import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../components/Hero/Hero";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 function Landing() {
 
@@ -9,9 +9,7 @@ function Landing() {
     useEffect(() => {
     async function fetchBackend() {
         try {
-        const response = await axios.get(
-            "http://localhost:5000/api/"
-        );
+        const response = await api.get("/");
 
         setMessage(response.data.message);
 
