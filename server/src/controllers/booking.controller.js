@@ -1,5 +1,6 @@
 import Booking from "../models/Booking.js";
 import Station from "../models/Station.js";
+import mongoose from "mongoose";
 
 export const createBooking = async (req, res) => {
   try {
@@ -86,8 +87,6 @@ export const createBooking = async (req, res) => {
 
     });
 
-    // Reserve one charging port
-
     return res.status(201).json({
 
       success: true,
@@ -138,6 +137,52 @@ export const getMyBookings = async (req, res) => {
     });
 
   }
+};
+
+export const getBookingById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Booking ID."
+            });
+        }
+
+        const booking = await Booking.findById(id)
+            .populate("station")
+            .populate("user", "name email");
+
+        if (!booking) {
+            return res.status(404).json({
+                success: false,
+                message: "Booking not found."
+            });
+        }
+
+        // Only owner can view booking
+        if (booking.user._id.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            booking
+        });
+
+    }
+
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
 };
 
 export const cancelBooking = async (req, res) => {
@@ -218,6 +263,13 @@ export const getAllBookings = async (req, res) => {
 export const startCharging = async (req, res) => {
     try{
         const booking = await Booking.findById(req.params.id);
+
+        if (booking.paymentStatus !== "Paid") {
+            return res.status(400).json({
+                success: false,
+                message: "Payment is pending."
+            });
+        }
 
         if(!booking){
             return res.status(404).json({

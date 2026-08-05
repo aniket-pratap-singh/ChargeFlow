@@ -25,8 +25,11 @@ const Booking = () => {
     };
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+
         try {
+
             const response = await api.post(
                 "/bookings",
                 {
@@ -34,78 +37,177 @@ const Booking = () => {
                     ...formData
                 }
             );
-            alert("Booking Created!");
+
+            alert("Booking Created Successfully!");
+
             navigate(`/payment/${response.data.booking._id}`);
+
         }
 
         catch (error) {
+
             alert(
                 error.response?.data?.message ||
                 "Booking Failed"
             );
+
         }
+
     };
 
     return (
-        <div>
-            <h1>Book Charging Slot</h1>
-            
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="date"
-                    name="bookingDate"
-                    onChange={handleChange}
-                />
 
-                <br /><br />
+        <div className="min-h-screen bg-slate-50">
 
-                <input
-                    type="time"
-                    name="startTime"
-                    onChange={handleChange}
-                />
+            {/* Hero */}
 
-                <br /><br />
+            <div className="bg-[#0F172A] text-white py-14">
 
-                <input
-                    type="time"
-                    name="endTime"
-                    onChange={handleChange}
-                />
+                <div className="max-w-5xl mx-auto px-6">
 
-                <br /><br />
+                    <h1 className="text-5xl font-bold">
 
-                <input
-                    type="text"
-                    name="vehicleNumber"
-                    placeholder="Vehicle Number"
-                    onChange={handleChange}
-                />
+                        Book Charging Slot
 
-                <br /><br />
+                    </h1>
 
-                <select
-                    name="connectorType"
-                    onChange={handleChange}
-                >
+                    <p className="text-gray-300 mt-3 text-lg">
 
-                    <option>CCS2</option>
+                        Select your preferred charging date and time.
 
-                    <option>Type2</option>
+                    </p>
 
-                    <option>CHAdeMO</option>
+                </div>
 
-                </select>
+            </div>
 
-                <br /><br />
+            {/* Booking Card */}
 
-                <button type="submit">
+            <div className="max-w-3xl mx-auto px-6 py-12">
 
-                    Book Slot
+                <div className="bg-white rounded-2xl shadow-xl p-8">
 
-                </button>
+                    <form
+                        onSubmit={handleSubmit}
+                        className="space-y-6"
+                    >
 
-            </form>
+                        <div>
+
+                            <label className="block text-gray-700 font-semibold mb-2">
+
+                                Booking Date
+
+                            </label>
+
+                            <input
+                                type="date"
+                                name="bookingDate"
+                                value={formData.bookingDate}
+                                onChange={handleChange}
+                                className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            />
+
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+
+                            <div>
+
+                                <label className="block text-gray-700 font-semibold mb-2">
+
+                                    Start Time
+
+                                </label>
+
+                                <input
+                                    type="time"
+                                    name="startTime"
+                                    value={formData.startTime}
+                                    onChange={handleChange}
+                                    className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                />
+
+                            </div>
+
+                            <div>
+
+                                <label className="block text-gray-700 font-semibold mb-2">
+
+                                    End Time
+
+                                </label>
+
+                                <input
+                                    type="time"
+                                    name="endTime"
+                                    value={formData.endTime}
+                                    onChange={handleChange}
+                                    className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                />
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <label className="block text-gray-700 font-semibold mb-2">
+
+                                Vehicle Number
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="vehicleNumber"
+                                placeholder="e.g. HR26AB1234"
+                                value={formData.vehicleNumber}
+                                onChange={handleChange}
+                                className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            />
+
+                        </div>
+
+                        <div>
+
+                            <label className="block text-gray-700 font-semibold mb-2">
+
+                                Connector Type
+
+                            </label>
+
+                            <select
+                                name="connectorType"
+                                value={formData.connectorType}
+                                onChange={handleChange}
+                                className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            >
+
+                                <option value="CCS2">CCS2</option>
+
+                                <option value="Type2">Type2</option>
+
+                                <option value="CHAdeMO">CHAdeMO</option>
+
+                            </select>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold text-lg py-4 rounded-xl transition duration-300"
+                        >
+
+                            Confirm Booking ⚡
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
 
         </div>
 

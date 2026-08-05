@@ -2,7 +2,7 @@ import express from "express";
 
 import { protect, adminOnly } from "../middleware/auth.middleware.js";
 
-import { createBooking, getMyBookings, cancelBooking, getAllBookings, startCharging, completeCharging} from "../controllers/booking.controller.js";
+import { createBooking, getMyBookings, getBookingById, cancelBooking, getAllBookings, startCharging, completeCharging} from "../controllers/booking.controller.js";
 
 const router = express.Router();
 
@@ -18,6 +18,13 @@ router.get(
   "/my",
   protect,
   getMyBookings
+);
+
+// Get bookings by booking Id for a user
+router.get(
+  "/:id",
+    protect,
+    getBookingById
 );
 
 // Cancel a booking
