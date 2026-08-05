@@ -24,9 +24,52 @@ const Booking = () => {
         });
     };
 
+    const validateBooking = () => {
+
+        if (!formData.bookingDate) {
+            alert("Please select a booking date.");
+            return false;
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const selectedDate = new Date(formData.bookingDate);
+
+        if (selectedDate < today) {
+            alert("Booking date cannot be in the past.");
+            return false;
+        }
+
+        if (!formData.startTime || !formData.endTime) {
+            alert("Please select both start and end time.");
+            return false;
+        }
+
+        const start = new Date(`2000-01-01T${formData.startTime}`);
+        const end = new Date(`2000-01-01T${formData.endTime}`);
+
+        if (start >= end) {
+            alert("End time must be later than start time.");
+            return false;
+        }
+
+        const duration =
+            (end - start) / (1000 * 60 * 60);
+
+        if (duration > 24) {
+            alert("Booking duration cannot exceed 24 hours.");
+            return false;
+        }
+
+        return true;
+
+    };
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+        if (!validateBooking()) return;
 
         try {
 
@@ -105,6 +148,7 @@ const Booking = () => {
                                 name="bookingDate"
                                 value={formData.bookingDate}
                                 onChange={handleChange}
+                                min={new Date().toISOString().split("T")[0]}
                                 className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
 
