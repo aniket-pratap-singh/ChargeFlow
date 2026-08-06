@@ -48,8 +48,15 @@ export const createBooking = async (req, res) => {
     }
 
     // Estimated Cost
-    const estimatedCost = selectedStation.pricePerKwh * 20;
+    const start = new Date(`1970-01-01T${startTime}:00`);
+    const end = new Date(`1970-01-01T${endTime}:00`);
 
+    const durationHours = (end - start) / (1000 * 60 * 60);
+
+    const chargingRate = 10; // kWh per hour
+
+    const estimatedCost = durationHours * chargingRate *  selectedStation.pricePerKwh;
+    
     const totalBookings = await Booking.countDocuments({
       station,
       bookingDate,
